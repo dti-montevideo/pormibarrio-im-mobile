@@ -295,7 +295,7 @@
     }
     .inputcard > div,
     .gmailstyletest > div,
-    .ui-field-contain 
+    .ui-field-contain
     {
         border:none;
         border-bottom: 1px solid #ccc;
@@ -846,7 +846,7 @@
         background-image: url(../images/photos.png);
     }
 
-    @media only screen and (min-resolution: 320dpi), 
+    @media only screen and (min-resolution: 320dpi),
     only screen and (-webkit-min-device-pixel-ratio: 2) {
         div[data-role='header'] .ui-icon-fms-account {
             background-image: url(../images/user@x2.png);
@@ -992,4 +992,32 @@
     #help.android2 #dismiss {
         top: 5px;
         right: 5px;
+    }
+
+
+    /* suggestor im*/
+    .span-suggest {
+        font-size: 11px;
+    }
+
+
+    .content-message{
+
+    	padding-left: 37px;
+    }
+    .message{
+    	border-radius: 5px;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 10px;
+        text-align: center;
+        text-shadow: none;
+
+    }
+    .warn-message{
+    	background-color: #FFFFCC;
+    }
+
+    .error-message{
+    	background-color: #F8CBCC;
     }

@@ -32,6 +32,8 @@
         </script>
 
         <script type="text/javascript" src="js/config.js"></script>
+        <script type="text/javascript" src="js/utils/constantes.js"></script>
+
 
         <script type="text/javascript" src="js/mobile_config.js"></script>
         <script type="text/javascript" src="jslib/jquery.mobile-1.3.1.min.js"></script>
@@ -47,8 +49,20 @@
         <script type="text/javascript" src="jslib/jquery.validate.min.js"></script>
 
         <script type="text/javascript" src="js/OpenLayers.fixmystreet.js"></script>
+        <script type="text/javascript" src="js/GeoJSON.js"></script>
+        <script type="text/javascript" src="jslib/proj4js-compressed.js"></script>
         <script type="text/javascript" src="js/map-OpenLayers.js"></script>
         <script type="text/javascript" src="js/map-bing-ol.js"></script>
+        <script type="text/javascript" src="js/models/strategies/SearchStrategy.js"></script>
+        <script type="text/javascript" src="js/models/strategies/CombinadaStrategy.js"></script>
+        <script type="text/javascript" src="js/models/strategies/DireccionStrategy.js"></script>
+        <script type="text/javascript" src="js/models/strategies/EsquinaStrategy.js"></script>
+        <script type="text/javascript" src="js/utils/RestUtils.js"></script>
+        <script type="text/javascript" src="js/utils/MapUtils.js"></script>
+        <script type="text/javascript" src="js/models/AutoCompleteModel.js"></script>
+        <script type="text/javascript" src="js/views/AutoCompleteView.js"></script>
+
+
 
         <script type="text/javascript" src="js/locate.js"></script>
         <script type="text/javascript" src="js/strings.js"></script>
@@ -77,6 +91,10 @@
         <script type="text/javascript" src="js/router.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
 
+
+
+
+
         <script type="text/javascript">
             var fixmystreet = {
                 'page': 'around',
@@ -85,7 +103,7 @@
                 'latitude': localStorage.latitude,
                 'longitude': localStorage.longitude,
 
-                'zoom': 8,
+                'zoom': 18,
                 'numZoomLevels': 10,
                 'zoomOffset': 13,
                 'map_type': "",

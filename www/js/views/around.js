@@ -1,4 +1,4 @@
-(function (FMS, Backbone, _, $) {
+(function (AutoCompleteView,FMS, Backbone, _, $) {
     _.extend( FMS, {
         AroundView: FMS.LocatorView.extend({
             template: 'around',
@@ -35,9 +35,13 @@
                 } else {
                     this.$el.html(template());
                 }
+
+
                 this.afterRender();
                 return this;
             },
+        //    afterRender: function() {},
+
 
             beforeDisplay: function() {
                 this.origPcPlaceholder = $('#pc').attr('placeholder');
@@ -76,6 +80,20 @@
                     this.locate();
                     this.displayButtons(false);
                 }
+
+
+                this.searchView = new AutoCompleteView({
+                  el: "#autocomplete-search",
+                  jQInputSelector: ":input[placeholder*='Buscar']",
+                  jQHMessageSelector: {
+                    container: "#input-destino-msg",
+                    message: "#input-destino-msg > .content > .message"
+                  },
+                  JQNextInputSelector: "#map",
+                  includeGeolocation: false,
+                  //agrego el listener
+                  pointListener:$.proxy(this.goAdressByPoint, this)
+                });
             },
 
             _back: function(e) {
@@ -95,7 +113,7 @@
                     show_map();
                 } else {
                     FMS.currentPosition = coords;
-                    var centre = this.projectCoords( coords );
+                    var centre = this.projectCoords( coords);
                     fixmystreet.map.panTo(centre);
                 }
             },
@@ -135,7 +153,7 @@
                         {
                             graphicZIndex: 3000,
                             graphicName: 'circle',
-                            'externalGraphic': 'images/gps-marker.svg', 
+                            'externalGraphic': 'images/gps-marker.svg',
                             pointRadius: 16
                         }
                     );
@@ -159,7 +177,7 @@
                         var currentPos = this.projectCoords(FMS.currentPosition);
                         var markerPos = this.getMarkerPosition(true);
 
-                        // Displaying the button if the report is in the same place as the 
+                        // Displaying the button if the report is in the same place as the
                         // GPS location could be confusing so check they are different.
                         // The slight margin of error is there to account for both rounding
                         // wiggle in the projectCoords and also so that small changes due to
@@ -368,7 +386,7 @@
 
             searchError: function(msg) {
                 if ( msg.length < 30 ) {
-                    $('#pc').attr('placeholder', msg).addClass('error');;
+                    $('#pc').attr('placeholder', msg).addClass('error');
                 } else {
                     $('#front-howto').html(msg);
                     $('#relocate').hide();
@@ -377,7 +395,7 @@
             },
 
             clearSearchErrors: function() {
-                $('#pc').attr('placeholder', this.origPcPlaceholder).removeClass('error');;
+                $('#pc').attr('placeholder', this.origPcPlaceholder).removeClass('error');
                 if ( fixmystreet.map ) {
                     $('#front-howto').hide();
                     $('#relocate').show();
@@ -442,7 +460,7 @@
                 if ( !fixmystreet.map ) {
                     this.$('#mark-here').hide();
                     this.$('#relocate').hide();
-                    $('#front-howto').html('<p>' + FMS.strings.locate_dismissed + '</p>');
+                  //  $('#front-howto').html('<p>' + FMS.strings.locate_dismissed + '</p>');
                     $('#front-howto').show();
                 }
                 this.finishedLocating();
@@ -488,15 +506,47 @@
                 return position;
             },
 
-            projectCoords: function( coords ) {
-                var centre = new OpenLayers.LonLat( coords.longitude, coords.latitude );
-                centre.transform(
-                    new OpenLayers.Projection("EPSG:4326"),
-                    fixmystreet.map.getProjectionObject()
-                );
+            projectCoords: function( coords,sourceEPSG ) {
+                var centre = new OpenLayers.LonLat( coords.longitude, coords.latitude ),srcProj;
+                if(!sourceEPSG){
+                  sourceEPSG="EPSG:4326";
+                }
+                srcProj = new OpenLayers.Projection(sourceEPSG);
+                if(srcProj!=fixmystreet.map.getProjectionObject()){
+
+                  centre.transform(
+                      srcProj,
+                      fixmystreet.map.getProjectionObject()
+                  );
+
+                }
 
                 return centre;
+            },
+            goAdressByPoint:function(geoPosition){
+
+              var coords = {longitude:geoPosition.geom.coordinates[0],latitude:geoPosition.geom.coordinates[1]};
+              coords = this.projectCoordsByEPSG(coords,"EPSG:32721","EPSG:4326");
+              $(this.searchView.jQInputSelector).blur();
+              this.setMapPosition({ coordinates: coords});
+
+            },
+            projectCoordsByEPSG:function(coords,sourceEPSG,targetEPSG){
+              var point = new OpenLayers.LonLat( coords.longitude, coords.latitude ),srcProj,targetProj;
+              srcProj = new OpenLayers.Projection(sourceEPSG);
+              targetProj = new OpenLayers.Projection(targetEPSG);
+               point.transform(
+                  srcProj,
+                  targetProj
+              );
+              coords.longitude=point.lon;
+              coords.latitude=point.lat;
+              return coords;
+
+
+
+
             }
         })
     });
-})(FMS, Backbone, _, $);
+})(AutoCompleteView,FMS, Backbone, _, $);
