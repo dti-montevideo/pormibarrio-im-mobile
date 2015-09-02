@@ -30,13 +30,15 @@
         //TODO agregar condicion
         this.context.bindOnblur(false);
         $input = $(data.input);
-        $ul = $('#ul-autocomplete-res');//this.context.$el;
+        $ul = /*$('#ul-autocomplete-res');*/this.context.$el;
         value = this.getInputSuggest($input.val());
         if(value==null)return;
         currentStrategy = this;
 
         html = "";
       //  $ul.listview();
+      $('#front-howto').hide();
+
        $ul.html('');
     	RestUtils.showInputHelpMessage(this.jQHMessageSelector.container,"",null);
         if (value && value.length >=this.minSuggestChars) {
@@ -89,7 +91,7 @@
                 $ul.trigger("updatelayout");
                 $('.ui-page').trigger('create');
                 $('#relocate').hide();
-                $('#front-howto').show();
+              //  $('#front-howto').show();
 
 
 				//$.mobile.hidePageLoadingMsg();

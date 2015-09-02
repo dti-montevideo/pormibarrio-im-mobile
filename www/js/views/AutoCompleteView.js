@@ -85,6 +85,7 @@
                 }
 
             }
+            self.onBlurBinded=bind;
         },
         setCurrentInput: function(inputStr) {
             $(this.jQInputSelector).val(inputStr);

@@ -460,7 +460,7 @@
                 if ( !fixmystreet.map ) {
                     this.$('#mark-here').hide();
                     this.$('#relocate').hide();
-                  //  $('#front-howto').html('<p>' + FMS.strings.locate_dismissed + '</p>');
+                   $('#front-howto').html('<p>' + FMS.strings.locate_dismissed + '</p>');
                     $('#front-howto').show();
                 }
                 this.finishedLocating();
@@ -527,7 +527,12 @@
 
               var coords = {longitude:geoPosition.geom.coordinates[0],latitude:geoPosition.geom.coordinates[1]};
               coords = this.projectCoordsByEPSG(coords,"EPSG:32721","EPSG:4326");
-              $(this.searchView.jQInputSelector).blur();
+              this.clearSearchErrors();
+              //desinstale el listener del input para no entrar en loop
+              if(!this.searchView.onBlurBinded){
+                $(this.searchView.jQInputSelector).blur();
+              }
+
               this.setMapPosition({ coordinates: coords});
 
             },
