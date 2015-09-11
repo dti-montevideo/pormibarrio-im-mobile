@@ -1000,6 +1000,10 @@
         font-size: 11px;
     }
 
+    .li-autocomplete{
+      padding-left:10px; 
+    }
+
 
     .content-message{
 

@@ -17,13 +17,7 @@
 
           initialize: function(){
 
-        },
-                getRestParamObj:function(){
-
-                        return  {tipoLugar:this.get("tipoLugar"),params:this.get("params")};
-
-
-                }
+        }
 
 
 

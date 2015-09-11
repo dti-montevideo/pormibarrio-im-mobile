@@ -60,11 +60,11 @@
     	if(data.length==0){
         	RestUtils.showInputHelpMessage(this.jQHMessageSelector.container,this.jQHMessageSelector.message,"Los datos ingresados no son correctos.<br>Por favor verifique y vuelva a intentarlo.",true);
         	return;
-    	}
+    	} 
     	$.each(data, function() {
 
             var infoUbicacion = this, inputStr;
-                     $('<li>').append($('<a class="address"/>')).append($('<h2 />', {
+                     $('<li class="li-autocomplete">').append($('<a class="address"/>')).append($('<h2 />', {
                      text: infoUbicacion.nombre
                      })).append(infoUbicacion.descTipo=='VIA'? '':$('<span />', {
                      text: '('+infoUbicacion.descSubtipo+')',class:'span-suggest'

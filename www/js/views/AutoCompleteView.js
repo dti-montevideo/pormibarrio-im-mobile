@@ -111,10 +111,11 @@
 
             this.model.set("currentLocation", location);
         },
+        /*
         getRestParamObj: function() {
 
             return this.model.getRestParamObj();
-        },
+        },*/
         getUbicacionByGeolocation: function(position) {
             console.log("Calculando posición actual geocoding......");
             var p =  MapUtils.fromLatLong2Json(position.coords.longitude, position.coords.latitude), geocodingURL;
