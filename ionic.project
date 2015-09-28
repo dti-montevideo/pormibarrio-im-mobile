@@ -1,0 +1,13 @@
+{
+  "name": "pmb-im",
+  "app_id": "",
+  "gulpStartupTasks": [
+    "default",
+    "watch",
+    "sass"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
+  ]
+}
