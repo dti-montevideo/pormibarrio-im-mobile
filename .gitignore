@@ -5,9 +5,5 @@ node_modules/
 platforms/
 plugins/
 www/lib/
-!www/lib/leaflet-layerjson
-!www/lib/leaflet-layerjson/**
-!www/lib/ion-wizard
-!www/lib/ion-wizard/**
 www/dist/
 .DS_STORE
