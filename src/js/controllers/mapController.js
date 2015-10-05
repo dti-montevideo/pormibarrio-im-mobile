@@ -188,6 +188,7 @@ starter.controllers.controller('MapController', ['$scope', '_',
               states:[{
                 stateName: 'mark-center',
                 onClick: function(button, map){
+                  _crosshair.setLatLng(map.getCenter());
                   _crosshair.addTo(map);
                   map.on('move', function(e) {
                     _crosshair.setLatLng(map.getCenter());
@@ -238,8 +239,8 @@ starter.controllers.controller('MapController', ['$scope', '_',
         },
 
         l = new L.LayerJSON({
-          url: baseURL + "ajax_geo?bbox={bbox}",
-          locAsGeoJSON: true
+          url: baseURL +"ajax_geo?bbox={bbox}"  /*"ajax_geo?bbox={bbox}"*/,
+          locAsGeoJSON: true/*locAsArray:true*/
         });
 
       leafletData.getMap().then(function(map) {

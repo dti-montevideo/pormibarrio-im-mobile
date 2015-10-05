@@ -58,7 +58,7 @@ starter.app = angular.module('starter', ['ionic','ionic.wizard', 'leaflet-direct
   views: {
     'menuContent': {
       templateUrl: 'templates/pmb-wizard.html',
-      controller: 'IntroCtrl'
+      controller: 'PMBCtrl'
 
     }
   }

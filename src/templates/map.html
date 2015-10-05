@@ -8,16 +8,16 @@
     <button ng-click="locate();" class="button button-icon icon ion-pinpoint"></button>
   </ion-nav-buttons>
 
-  <ion-content data-tap-disabled="true">
+  <ion-content data-tap-disabled="true" class="has-footer">
 
 
     <leaflet defaults="map.defaults" center="map.center" markers="map.markers" ng-if="map"></leaflet>
 
 
   </ion-content>
-  <ion-footer-bar align-title="left" class="bar-balanced">
-    <button class="bar bar-footer bar-balanced" ui-sref="app.wizard">
-        <p class="title">Nuevo Reporte<p>
+  <ion-footer-bar align-title="left" class="bar-balanced" ng-controller="ReportCtrl">
+    <button class="bar bar-footer bar-balanced" ng-click="initReport()">
+        <p class="title">{{reportButton.text}}<p>
       </button>
 </ion-footer-bar>
 

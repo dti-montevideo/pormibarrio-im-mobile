@@ -1,4 +1,4 @@
-<ion-view ng-controller="imageController">
+<ion-view ng-controller="ReportCtrl">
   <ion-nav-buttons side="left">
     <button class="button button-light no-animation" ion-wizard-previous>
       Atrás
@@ -14,7 +14,7 @@
       <ion-wizard-content class="has-header">
         <div class="list card">
           <div class="item item-image">
-            <img ng-src="{{urlForImage(image)}}" />
+            <img ng-src="{{urlForImage()}}" />
           </div>
           <div class="padding">
             <button class="button button-block button-calm" ng-click="addImage()">Camara</button>
