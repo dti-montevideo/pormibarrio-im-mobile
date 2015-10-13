@@ -46,7 +46,8 @@ starter.app = angular.module('starter', ['ionic','ionic.wizard', 'leaflet-direct
     url: "/map",
     views: {
       'menuContent' :{
-        templateUrl: "templates/map.html"
+        templateUrl: "templates/map.html",
+        controller : "PMBCtrl"
       }
     }
   })
@@ -58,7 +59,7 @@ starter.app = angular.module('starter', ['ionic','ionic.wizard', 'leaflet-direct
   views: {
     'menuContent': {
       templateUrl: 'templates/pmb-wizard.html',
-      controller: 'PMBCtrl'
+      controller: 'ReportCtrl'
 
     }
   }

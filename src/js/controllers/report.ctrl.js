@@ -1,34 +1,8 @@
-starter.controllers.controller('ReportCtrl', ['$scope', "$state",'$cordovaCamera', '$cordovaFile', '$ionicSlideBoxDelegate', '$ionicNavBarDelegate', 'leafletData', 'ReportService', function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $ionicNavBarDelegate, leafletData, ReportService) {
+starter.controllers.controller('ReportCtrl', ['$scope', "$state",'$cordovaCamera', '$cordovaFile', '$ionicSlideBoxDelegate', '$ionicNavBarDelegate', 'leafletData', 'ReportService','PMBService', function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $ionicNavBarDelegate, leafletData, ReportService,PMBService) {
 
 
-  $scope.reportButton={text:"Reportar",state:"unConfirmed"};
-  $scope.initReport = function() {
+  $scope.report = ReportService.current;
 
-    var _pin, _pinIcon = L.icon({
-      iconUrl: 'img/pin@x2.png',
-         iconSize: [70, 110], // size of the icon
-          iconAnchor: [-18,55], // point of the icon which will correspond to marker's location
-    });
-
-    if($scope.reportButton.state=="unConfirmed"){
-
-      $scope.reportButton.text ="Confirmar";
-      $scope.reportButton.state = "about2Confirm";
-
-
-    leafletData.getMap().then(function(map) {
-      _pin = new L.marker(map.getCenter(), {
-        icon: _pinIcon,
-        clickable: false
-      }).addTo(map);
-
-
-    });
-  }else{
-    $scope.goToState("app.wizard");
-  }
-
-  };
 
   $scope.goToState = function(stateView) {
 
@@ -36,9 +10,12 @@ starter.controllers.controller('ReportCtrl', ['$scope', "$state",'$cordovaCamera
   };
 
   $scope.confirmReport = function() {
+ console.log(JSON.stringify($scope.report));
 
-
-    ReportService.report($scope.currentReport).then(function(result) {
+    PMBService.report($scope.report).then(function(result) {
+      var jsonResult = JSON.stringify(result);
+      console.log(jsonResult);
+      alert(jsonResult);
 
     });
   };
@@ -66,6 +43,8 @@ starter.controllers.controller('ReportCtrl', ['$scope', "$state",'$cordovaCamera
       allowEdit: false,
       encodingType: Camera.EncodingType.JPEG,
       popoverOptions: CameraPopoverOptions,
+      saveToPhotoAlbum: true
+
     };
 
 

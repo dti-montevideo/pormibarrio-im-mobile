@@ -9,6 +9,9 @@ starter.services.factory('ReportService', ['$http', 'leafletData', '$cordovaFile
     angular.extend(this, _data);
   }
 
+
+
+
 Report._default = function(){
   var _data = {
     lat: 0,
@@ -19,7 +22,12 @@ Report._default = function(){
     category: '',
     phone: '',
     pc: '',
-    file: ''
+    file: '',
+    name:'Nacho Apellido',
+  email:'ignacio.talavera@imm.gub.uy',
+  submit_sign_in:1,
+  password_sign_in:'test',
+  remember_me:1
   };
   return new Report(_data);
 };
@@ -30,6 +38,8 @@ Report._default = function(){
     return Report.current;
   };
 
+
+
   /**
    * Static method, assigned to class
    * Instance ('this') is not available in static context
@@ -39,6 +49,12 @@ Report._default = function(){
     return new Report(
       _data
     );
+  };
+
+  Report.prototype.setLatLng = function (latlng) {
+
+    this.lat = latlng.lat;
+    this.lon = latlng.lng;
   };
 
   /**

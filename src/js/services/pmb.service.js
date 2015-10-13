@@ -1,5 +1,5 @@
 starter.services.factory('PMBService', ['$http', 'leafletData', '$cordovaFileTransfer', function($http, leafletData, $cordovaFileTransfer) {
-  var base = "http://10.191.0.16:3000";
+  var base = "http://datauy.netuy.net/";//"http://10.191.0.16:3000/";
 
   var PMBService = {
 
@@ -22,7 +22,7 @@ starter.services.factory('PMBService', ['$http', 'leafletData', '$cordovaFileTra
           });
 
       }else{
-        return $http.post(base + 'report/new/mobile', form);
+        return $http.get(base + 'report/new/mobile', form);
       }
 
       //
