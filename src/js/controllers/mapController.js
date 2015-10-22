@@ -84,13 +84,13 @@ starter.controllers.controller('MapController', ['$scope', '_',
      * Detect user long-pressing on map to add new location
      */
 
-/*
-    $scope.$on('leafletDirectiveMap.contextmenu', function(event, locationEvent) {
-      $scope.newLocation = new Location();
-      $scope.newLocation.lat = locationEvent.leafletEvent.latlng.lat;
-      $scope.newLocation.lng = locationEvent.leafletEvent.latlng.lng;
-      $scope.modal.show();
-    });*/
+    /*
+        $scope.$on('leafletDirectiveMap.contextmenu', function(event, locationEvent) {
+          $scope.newLocation = new Location();
+          $scope.newLocation.lat = locationEvent.leafletEvent.latlng.lat;
+          $scope.newLocation.lng = locationEvent.leafletEvent.latlng.lng;
+          $scope.modal.show();
+        });*/
 
     $scope.saveLocation = function() {
       LocationsService.savedLocations.push($scope.newLocation);
@@ -164,54 +164,57 @@ starter.controllers.controller('MapController', ['$scope', '_',
       });
     };
 
-    $scope.addMapControls= function(){
+    $scope.addMapControls = function() {
 
-      var _crosshair,_crosshairIcon = L.icon({
-        iconUrl: 'img/crosshairs@x2.png'//,
-      /*  iconSize: [36, 36], // size of the icon
-        iconAnchor: [18, 18], // point of the icon which will correspond to marker's location
-        */
+      var _crosshair, _crosshairIcon = L.icon({
+        iconUrl: 'img/crosshairs@x2.png' //,
+          /*  iconSize: [36, 36], // size of the icon
+            iconAnchor: [18, 18], // point of the icon which will correspond to marker's location
+            */
       });
 
-          leafletData.getMap().then(function(map) {
+      leafletData.getMap().then(function(map) {
 
-            _crosshair = new L.marker(map.getCenter(), {
-              icon: _crosshairIcon,
-              clickable: false
-            });
+        _crosshair = new L.marker(map.getCenter(), {
+          icon: _crosshairIcon,
+          clickable: false
+        });
 
-            L.easyButton({
-              id: 'id-for-the-button',
-              position: 'bottomleft',
-              type: 'replace',
-              leafletClasses: true,
-              states:[{
-                stateName: 'mark-center',
-                onClick: function(button, map){
+        L.easyButton({
+          id: 'id-for-the-button',
+          position: 'bottomleft',
+          type: 'replace',
+          leafletClasses: true,
+          states: [{
+              stateName: 'mark-center',
+              onClick: function(button, map) {
+                _crosshair.setLatLng(map.getCenter());
+                _crosshair.addTo(map);
+                map.on('move', function(e) {
                   _crosshair.setLatLng(map.getCenter());
-                  _crosshair.addTo(map);
-                  map.on('move', function(e) {
-                    _crosshair.setLatLng(map.getCenter());
-                  });
+                });
 
-                  button.state('remove-mark-center');
-                },
-                title: 'show me the middle',
-                icon: 'ion-pinpoint'
-              },{
+                button.state('remove-mark-center');
+              },
+              title: 'show me the middle',
+              icon: 'ion-pinpoint'
+            }, {
               stateName: 'remove-mark-center',
-              onClick: function(button, map){
-                  map.removeLayer(_crosshair);
-                  button.state('mark-center');
+              onClick: function(button, map) {
+                map.removeLayer(_crosshair);
+                button.state('mark-center');
               },
               title: 'show me the middle',
               icon: 'ion-ios-undo'
             }
 
-            ]
-            }).addTo(map);
+          ]
+        }).addTo(map);
 
-          });
+        L.Control.geocoder().addTo(map);
+
+
+      });
     };
 
     $scope.addReportsLayer = function() {
@@ -239,8 +242,8 @@ starter.controllers.controller('MapController', ['$scope', '_',
         },
 
         l = new L.LayerJSON({
-          url: baseURL +"ajax_geo?bbox={bbox}"  /*"ajax_geo?bbox={bbox}"*/,
-          locAsGeoJSON: true/*locAsArray:true*/
+          url: baseURL + "ajax_geo?bbox={bbox}" /*"ajax_geo?bbox={bbox}"*/ ,
+          locAsGeoJSON: true /*locAsArray:true*/
         });
 
       leafletData.getMap().then(function(map) {
@@ -275,9 +278,52 @@ starter.controllers.controller('MapController', ['$scope', '_',
 
     };
 
-    $scope.newReport = function(){
+    $scope.newReport = function() {
       alert("Nuevo Reporte");
     };
+
+
+    // Suggestion
+    $scope.model = "";
+    $scope.clickedValueModel = "";
+    $scope.removedValueModel = "";
+
+    $scope.getTestItems = function(query) {
+      var toReturn = [],
+        obj;
+      if (query) {
+        obj = {
+          items: [{
+            id: "1",
+            name: query + "1",
+            view: "view: " + query + "1"
+          }, {
+            id: "2",
+            name: query + "2",
+            view: "view: " + query + "2"
+          }, {
+            id: "3",
+            name: query + "3",
+            view: "view: " + query + "3"
+          }]
+        };
+        toReturn = obj.items;
+      }
+      return toReturn;
+    };
+
+    $scope.itemsClicked = function(callback) {
+      $scope.clickedValueModel = callback;
+    };
+    $scope.itemsRemoved = function(callback) {
+      $scope.removedValueModel = callback;
+    };
+
+
+
+
+
+
 
   }
 ]);

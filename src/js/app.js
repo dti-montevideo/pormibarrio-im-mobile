@@ -10,7 +10,7 @@ var starter = {
   services: angular.module('starter.services', [])
 };
 
-starter.app = angular.module('starter', ['ionic','ionic.wizard', 'leaflet-directive', 'starter.controllers', 'starter.services', 'ngCordova'])
+starter.app = angular.module('starter', ['ionic','ionic.wizard','ion-autocomplete','leaflet-directive', 'starter.controllers', 'starter.services', 'ngCordova'])
 
 .run(function($ionicPlatform, $rootScope) {
   $rootScope.VERSION = window.VERSION;

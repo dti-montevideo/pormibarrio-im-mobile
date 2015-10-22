@@ -1,13 +1,14 @@
 {
   "name": "pormibarrio-im",
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.0.0-rc.1"
+    "ionic": "driftyco/ionic-bower#1.1.0"
   },
   "dependencies": {
     "ngCordova": "~0.1.12-alpha",
     "angular-leaflet-directive": "~0.8.8",
     "Leaflet.EasyButton": "~1.1.2",
-    "underscore": "~1.8.3"	
+    "underscore": "~1.8.3",
+    "ion-autocomplete": "~0.3.0"
   },
   "version": "0.1.0",
   "homepage": "https://github.com/dti-montevideo/pormibarrio-im-mobile",
