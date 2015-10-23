@@ -12,6 +12,15 @@ var starter = {
 
 starter.app = angular.module('starter', ['ionic','ionic.wizard','ion-autocomplete','leaflet-directive', 'starter.controllers', 'starter.services', 'ngCordova'])
 
+.constant('ApiImEndpoint', {
+  url: '/im'
+})
+
+.constant('ApiDataEndpoint', {
+  url: '/data'
+})
+
+
 .run(function($ionicPlatform, $rootScope) {
   $rootScope.VERSION = window.VERSION;
   $ionicPlatform.ready(function() {

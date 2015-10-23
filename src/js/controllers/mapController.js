@@ -2,17 +2,13 @@ starter.controllers.controller('MapController', ['$scope', '_',
   '$cordovaGeolocation',
   '$stateParams',
   '$ionicModal',
-  '$ionicPopup',
-  'LocationsService',
-  'InstructionsService', 'leafletData', 'PMBService',
+  '$ionicPopup','leafletData', 'PMBService',
   function(
     $scope, _,
     $cordovaGeolocation,
     $stateParams,
     $ionicModal,
-    $ionicPopup,
-    LocationsService,
-    InstructionsService, leafletData, PMBService
+    $ionicPopup,leafletData, PMBService
   ) {
 
     /**
@@ -21,24 +17,11 @@ starter.controllers.controller('MapController', ['$scope', '_',
     $scope.featureReports = {};
     $scope.$on("$stateChangeSuccess", function() {
 
-      $scope.locations = LocationsService.savedLocations;
-      $scope.newLocation = {};
-
-      if (!InstructionsService.instructions.newLocations.seen) {
-
-        var instructionsPopup = $ionicPopup.alert({
-          title: 'Bienvenido ',
-          template: InstructionsService.instructions.newLocations.text
-        });
-        instructionsPopup.then(function(res) {
-          InstructionsService.instructions.newLocations.seen = true;
-        });
-
 
         $scope.addReportsLayer();
         $scope.addMapControls();
 
-      }
+
 
       $scope.map = {
         defaults: {
@@ -92,35 +75,6 @@ starter.controllers.controller('MapController', ['$scope', '_',
           $scope.modal.show();
         });*/
 
-    $scope.saveLocation = function() {
-      LocationsService.savedLocations.push($scope.newLocation);
-      $scope.modal.hide();
-      $scope.goTo(LocationsService.savedLocations.length - 1);
-    };
-
-    /**
-     * Center map on specific saved location
-     * @param locationKey
-     */
-    $scope.goTo = function(locationKey) {
-
-      var location = LocationsService.savedLocations[locationKey];
-
-      $scope.map.center = {
-        lat: location.lat,
-        lng: location.lng,
-        zoom: 12
-      };
-
-      $scope.map.markers[locationKey] = {
-        lat: location.lat,
-        lng: location.lng,
-        message: location.name,
-        focus: true,
-        draggable: false
-      };
-
-    };
 
     /**
      * Center map on user's current position

@@ -34,13 +34,13 @@
   <label class="item item-input">
       <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off"
              ng-model="model"
-             item-value-key="name"
-             item-view-value-key="view"
-             items-method="getTestItems(query)"
+             item-value-key="codigo"
+             item-view-value-key="nombre"
+             items-method="searchLocation(query)"
              placeholder="Buscar direccion"
              items-clicked-method="itemsClicked(callback)"
              items-removed-method="itemsRemoved(callback)"
-             max-selected-items="1"/>
+             max-selected-items="1" select-items-label="Seleccione una ubicación"/>
   </label>
 </ion-nav-title>
   <ion-content data-tap-disabled="true" class="has-footer">
@@ -56,22 +56,7 @@
     <button class="bar bar-footer bar-balanced" ng-click="initReport()">
         <p class="title">{{reportButton.text}}<p>
       </button>
-<!--
-      <form>
 
-        <label class="item item-input">
-            <span class="input-label">Multiple select autocomplete</span>
-            <input ion-autocomplete type="text" readonly="readonly" class="ion-autocomplete" autocomplete="off"
-                   ng-model="model"
-                   item-value-key="name"
-                   item-view-value-key="view"
-                   items-method="getTestItems(query)"
-                   placeholder="Enter test query ..."
-                   items-clicked-method="itemsClicked(callback)"
-                   items-removed-method="itemsRemoved(callback)"
-                   max-selected-items="1" width="100%"/>
-        </label>
-      </form>-->
 </ion-footer-bar>
 
 </ion-view>

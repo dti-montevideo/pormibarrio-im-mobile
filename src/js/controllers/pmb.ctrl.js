@@ -1,4 +1,4 @@
-starter.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData','PMBService', 'ReportService',function($scope, $state, leafletData,PMBService,ReportService) {
+starter.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData','PMBService', 'ReportService','locationAPI',function($scope, $state, leafletData,PMBService,ReportService,locationAPI) {
   $scope.reportButton={text:"Reportar",state:"unConfirmed"};
 
   $scope.initReport = function() {
@@ -34,6 +34,17 @@ starter.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData','PM
 
     $state.go("app.wizard");
   }
+
+  };
+
+
+  $scope.searchLocation = function(query){
+
+    if (query){
+      console.log("query= " +query);
+      return locationAPI.searchLocationByStr(query);
+
+    }
 
   };
 

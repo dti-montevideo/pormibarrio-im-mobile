@@ -1,6 +1,18 @@
 {
   "name": "pmb-im",
   "app_id": "",
+  "proxies": [
+    {
+      "path": "/im",
+      "proxyUrl":"http://m.comoir.montevideo.gub.uy"
+    },
+
+    {
+      "path": "/data",
+      "proxyUrl": "http://datauy.netuy.net/"
+    }
+
+  ],
   "gulpStartupTasks": [
     "default",
     "watch",
@@ -10,4 +22,5 @@
     "www/**/*",
     "!www/lib/**/*"
   ]
+
 }
