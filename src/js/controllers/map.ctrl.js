@@ -15,6 +15,12 @@ starter.controllers.controller('MapController', ['$scope', '_',
      * Once state loaded, get put map on scope.
      */
     $scope.featureReports = {};
+
+
+
+
+
+
     $scope.$on("$stateChangeSuccess", function() {
 
 
@@ -266,9 +272,7 @@ starter.controllers.controller('MapController', ['$scope', '_',
       return toReturn;
     };
 
-    $scope.itemsClicked = function(callback) {
-      $scope.clickedValueModel = callback;
-    };
+  
     $scope.itemsRemoved = function(callback) {
       $scope.removedValueModel = callback;
     };

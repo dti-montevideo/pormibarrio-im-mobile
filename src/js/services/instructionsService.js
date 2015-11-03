@@ -1,4 +1,4 @@
-starter.services.factory('InstructionsService', [ function() {
+starter.services.factory('MapServices', [ function() {
 
   var instructionsObj = {};
 
