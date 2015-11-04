@@ -28,5 +28,6 @@ starter.services.factory('locationAPI', ['$http', '$q','ApiImEndpoint','ApiDataE
 
   };
 
+  return locationAPI;
 
 }]);
