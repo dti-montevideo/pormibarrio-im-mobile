@@ -4,7 +4,7 @@
   "proxies": [
     {
       "path": "/im",
-      "proxyUrl":"http://m.comoir.montevideo.gub.uy"
+      "proxyUrl":"http://desa6.montevideo.gub.uy"
     },
 
     {

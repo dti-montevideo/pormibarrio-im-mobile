@@ -1,4 +1,4 @@
-starter.controllers.controller('MapController', ['$scope', '_',
+pmb_im.controllers.controller('MapController', ['$scope', '_',
   '$cordovaGeolocation',
   '$stateParams',
   '$ionicModal',
@@ -68,20 +68,6 @@ starter.controllers.controller('MapController', ['$scope', '_',
     }).then(function(modal) {
       $scope.modal = modal;
     });
-
-    /**
-     * Detect user long-pressing on map to add new location
-     */
-
-    /*
-        $scope.$on('leafletDirectiveMap.contextmenu', function(event, locationEvent) {
-          $scope.newLocation = new Location();
-          $scope.newLocation.lat = locationEvent.leafletEvent.latlng.lat;
-          $scope.newLocation.lng = locationEvent.leafletEvent.latlng.lng;
-          $scope.modal.show();
-        });*/
-
-
     /**
      * Center map on user's current position
      */
@@ -171,7 +157,7 @@ starter.controllers.controller('MapController', ['$scope', '_',
           ]
         }).addTo(map);
 
-        L.Control.geocoder().addTo(map);
+      //  L.Control.geocoder().addTo(map);
 
 
       });
@@ -272,7 +258,7 @@ starter.controllers.controller('MapController', ['$scope', '_',
       return toReturn;
     };
 
-  
+
     $scope.itemsRemoved = function(callback) {
       $scope.removedValueModel = callback;
     };

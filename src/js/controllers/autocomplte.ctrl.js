@@ -1,4 +1,4 @@
-starter.controllers.controller('AutoCompleteCtrl', ['$scope', 'leafletData', 'locationAPI', function($scope, leafletData, locationAPI) {
+pmb_im.controllers.controller('AutoCompleteCtrl', ['$scope', 'leafletData', 'locationAPI', function($scope, leafletData, locationAPI) {
 
 
   $scope.ionAutocompleteElement = angular.element(document.getElementsByClassName("ion-autocomplete"));

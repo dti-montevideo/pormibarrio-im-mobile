@@ -1,4 +1,4 @@
-starter.services.factory('PMBService', ['$http', 'leafletData', '$cordovaFileTransfer', function($http, leafletData, $cordovaFileTransfer) {
+pmb_im.services.factory('PMBService', ['$http', 'leafletData', '$cordovaFileTransfer', function($http, leafletData, $cordovaFileTransfer) {
   var base = "http://datauy.netuy.net/";//"http://10.191.0.16:3000/";
 
   var PMBService = {

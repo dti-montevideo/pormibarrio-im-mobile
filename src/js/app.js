@@ -1,16 +1,16 @@
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// 'pmb_im' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var starter = {
-  controllers: angular.module('starter.controllers', []),
-  services: angular.module('starter.services', [])
+var pmb_im = {
+  controllers: angular.module('pmb_im.controllers', []),
+  services: angular.module('pmb_im.services', [])
 };
 
-starter.app = angular.module('starter', ['ionic','ionic.wizard','ion-autocomplete','leaflet-directive', 'starter.controllers', 'starter.services', 'ngCordova'])
+pmb_im.app = angular.module('pmb_im', ['ionic','ionic.wizard','ion-autocomplete','leaflet-directive', 'pmb_im.controllers', 'pmb_im.services', 'ngCordova'])
 
 .constant('ApiImEndpoint', {
   url: '/im'

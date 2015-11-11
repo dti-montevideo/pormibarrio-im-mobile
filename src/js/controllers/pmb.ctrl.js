@@ -1,9 +1,11 @@
-starter.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PMBService', 'ReportService', 'locationAPI', function($scope, $state, leafletData, PMBService, ReportService, locationAPI) {
+pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PMBService', 'ReportService', 'locationAPI', 'MapService',function($scope, $state, leafletData, PMBService, ReportService, locationAPI,MapService) {
   $scope.reportButton = {
     text: "Reportar",
     state: "unConfirmed"
   };
   $scope.searchMode = "calle.lugar";
+  $scope.location ={calle:null,esquina:null,lugar:null};
+
 
   //Auto complete
 
@@ -56,8 +58,8 @@ starter.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'P
 
   $scope.searchLocation = function(query) {
     var promiseSearch;
-    if (query) {
-      console.log("query= " + query);
+    if (query && query.length>=2) {
+  
 
       if ($scope.searchMode == "calle.lugar") {
         promiseSearch = locationAPI.searchLocationByStr(query);
@@ -86,29 +88,55 @@ starter.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'P
   };
 
   $scope.itemsClicked = function(callback) {
+    var locationGeomParams ={tipo:null,pathParams:[]};
     $scope.clickedValueModel = callback;
     $scope.selectedItem = callback.selectedItems[0];
     $scope.ionAutocompleteElementSearch = angular.element(document.getElementsByClassName("ion-autocomplete-search"));
-    if ($scope.serachMode == "esquina.numero") {
+    if ($scope.searchMode == "esquina.numero") {
+      //selecciono una esquina
+        $scope.location.esquina= $scope.selectedItem;
+        locationGeomParams.tipo="ESQUINA";//$scope.selectedItem.descTipo;
+        locationGeomParams.pathParams.push($scope.location.calle.codigo);
+        locationGeomParams.pathParams.push($scope.location.esquina.codigo);
+        locationAPI.getLocationGeom(locationGeomParams).success(function(result){
+        MapService.goToPlace(angular.extend({nombre:$scope.selectedItem.nombre},result));
+        $scope.searchMode = "calle.lugar";
+        $scope.ionAutocompleteElementSearch.attr("placeholder", "Buscar calle o lugar");
 
-      $scope.searchMode = "calle.lugar";
-      $scope.ionAutocompleteElementSearc.hideModal();
-      $scope.ionAutocompleteElementSearch.attr("placeholder", "Buscar calle o lugar");
+        });
 
-      //goto place en el mapa
+
+
     } else {
 
 
       if ($scope.selectedItem.descTipo === "VIA") {
+        $scope.location.calle= $scope.selectedItem;
         $scope.searchMode = "esquina.numero";
         $scope.ionAutocompleteElementSearch.attr("placeholder", "Esquina o número");
         $scope.ionAutocompleteElement.controller('ionAutocomplete').showModal();
+
+      }else{
+        //goto place en el mapa
+        $scope.location.lugar= $scope.selectedItem;
+        locationGeomParams.tipo=$scope.selectedItem.descSubtipo;
+        locationGeomParams.pathParams.push($scope.location.lugar.codigo);
+        locationAPI.getLocationGeom(locationGeomParams).success(function(result){
+        MapService.goToPlace(angular.extend({nombre:$scope.selectedItem.nombre},result));
+
+        });
+
+
+
+
+
+
+
 
       }
     }
 
   };
-
 
 
 
