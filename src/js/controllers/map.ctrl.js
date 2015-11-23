@@ -165,7 +165,7 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
 
     $scope.addReportsLayer = function() {
 
-      var baseURL = "http://devel.pormibarrio.uy", ///"http://pormibarrio.uy/";//"http://datauy.netuy.net/",
+      var baseURL = "http://devel.pormibarrio.uy/", ///"http://pormibarrio.uy/";//"http://datauy.netuy.net/",
         buildPopup = function(data, marker) {
           var reportId = data[3],
             descripcion = data[4];

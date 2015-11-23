@@ -1,6 +1,6 @@
 pmb_im.services.factory('locationAPI', ['$http', '$q', 'ApiImEndpoint', 'ApiDataEndpoint', function($http, $q, ApiImEndpoint, ApiDataEndpoint) {
 
-  var restPreffix = "ubicacionesRest";
+  var restPreffix = "ubicacionesRestWEB";
 
 
   var locationAPI = {};
