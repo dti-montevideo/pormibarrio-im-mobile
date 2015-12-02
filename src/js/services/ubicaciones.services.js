@@ -29,7 +29,9 @@ pmb_im.services.factory('locationAPI', ['$http', '$q', 'ApiImEndpoint', 'ApiData
       url += '/' + _location.pathParams[i];
     }
 
-    return $http.get(url);
+    return $http.get(url).then(function(response){
+      return response.data;
+    });
 
 
   };

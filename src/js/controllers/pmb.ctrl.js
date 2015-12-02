@@ -1,4 +1,4 @@
-pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PMBService', 'ReportService', 'locationAPI', 'MapService',function($scope, $state, leafletData, PMBService, ReportService, locationAPI,MapService) {
+pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PMBService', 'ReportService', 'locationAPI', 'MapService','_','Loader',function($scope, $state, leafletData, PMBService, ReportService, locationAPI,MapService,_,Loader) {
   $scope.reportButton = {
     text: "Reportar",
     state: "unConfirmed"
@@ -10,7 +10,7 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
   //Auto complete
 
 
-
+  var locationGeomParams ={tipo:null,pathParams:[]};
   $scope.$on("$stateChangeSuccess", function() {
     $scope.ionAutocompleteElement = angular.element(document.getElementsByClassName("ion-autocomplete"));
     console.log(JSON.stringify($scope.ionAutocompleteElement));
@@ -55,11 +55,10 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
 
   };
 
-
   $scope.searchLocation = function(query) {
     var promiseSearch;
     if (query && query.length>=2) {
-  
+
 
       if ($scope.searchMode == "calle.lugar") {
         promiseSearch = locationAPI.searchLocationByStr(query);
@@ -79,7 +78,6 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
     }
   };
 
-
   $scope.onClick = function() {
 
     $scope.ionAutocompleteElement.controller('ionAutocomplete').showModal();
@@ -88,7 +86,7 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
   };
 
   $scope.itemsClicked = function(callback) {
-    var locationGeomParams ={tipo:null,pathParams:[]};
+
     $scope.clickedValueModel = callback;
     $scope.selectedItem = callback.selectedItems[0];
     $scope.ionAutocompleteElementSearch = angular.element(document.getElementsByClassName("ion-autocomplete-search"));
@@ -98,8 +96,8 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
         locationGeomParams.tipo="ESQUINA";//$scope.selectedItem.descTipo;
         locationGeomParams.pathParams.push($scope.location.calle.codigo);
         locationGeomParams.pathParams.push($scope.location.esquina.codigo);
-        locationAPI.getLocationGeom(locationGeomParams).success(function(result){
-        MapService.goToPlace(angular.extend({nombre:$scope.selectedItem.nombre},result));
+        locationAPI.getLocationGeom(locationGeomParams).then(function(result){
+        MapService.goToPlace(angular.extend({nombre: $scope.location.calle.nombre + " Y " + $scope.selectedItem.nombre},result));
         $scope.searchMode = "calle.lugar";
         $scope.ionAutocompleteElementSearch.attr("placeholder", "Buscar calle o lugar");
 
@@ -121,20 +119,35 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
         $scope.location.lugar= $scope.selectedItem;
         locationGeomParams.tipo=$scope.selectedItem.descSubtipo;
         locationGeomParams.pathParams.push($scope.location.lugar.codigo);
-        locationAPI.getLocationGeom(locationGeomParams).success(function(result){
+        locationAPI.getLocationGeom(locationGeomParams).then(function(result){
         MapService.goToPlace(angular.extend({nombre:$scope.selectedItem.nombre},result));
 
         });
 
-
-
-
-
-
-
-
       }
     }
+
+  };
+
+  $scope.itemsCanceled= function(_item){
+    console.log(JSON.stringify(_item));
+    var numPuerta = parseInt(_item.searchQuery);
+    if(Number.isInteger(numPuerta)){
+      console.log("IS number");
+      locationGeomParams.tipo="DIRECCION";//$scope.selectedItem.descTipo;
+      locationGeomParams.pathParams.push($scope.location.calle.codigo);
+      locationGeomParams.pathParams.push(numPuerta);
+      locationAPI.getLocationGeom(locationGeomParams).then(function(result){
+      MapService.goToPlace(angular.extend({nombre:$scope.selectedItem.nombre + " " + numPuerta },result));
+      $scope.searchMode = "calle.lugar";
+
+    },function(error){
+      console.log("Error obteniendo la direccion "+ JSON.stringify(error));
+      Loader.showAlert("Error","No existe esa direccion").then(function(res){
+          $scope.ionAutocompleteElement.controller('ionAutocomplete').showModal();
+        });
+    });
+  }
 
   };
 
