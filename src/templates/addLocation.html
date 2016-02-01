@@ -1,10 +1,10 @@
 <ion-modal-view>
   <ion-header-bar class="bar-calm">
 
-    <h1 class="title">New Location</h1>
+    <h1 class="title">Reportar</h1>
 
     <div class="buttons">
-      <button class="button button-clear" ng-click="modal.hide()">Cancel</button>
+      <button class="button button-clear" ng-click="modal.hide()">Volver al mapa</button>
     </div>
 
   </ion-header-bar>
@@ -16,16 +16,16 @@
       <div class="list">
 
         <label class="item item-input">
-          <span class="input-label">Name</span>
-          <input type="text" ng-model="newLocation.name" placeholder="What's Here?" ng-minlength="1" ng-maxlength="100" required>
+          <span class="input-label">Título</span>
+          <input type="text" ng-model="newLocation.name" placeholder="¿Qué vas a reportar aquí?" ng-minlength="1" ng-maxlength="100" required>
         </label>
 
         <div class="item tabs tabs-secondary tabs-icon-left">
           <a class="tab-item" href="#">
-            LAT : {{newLocation.lat }}
+            Latitud : {{newLocation.lat }}
           </a>
           <a class="tab-item" href="#">
-            LNG : {{newLocation.lng }}
+            Longitud : {{newLocation.lng }}
           </a>
         </div>
 
@@ -33,7 +33,7 @@
 
       <div class="padding">
 
-        <button class="button button-block button-balanced" ng-disabled="locationForm.$invalid">Save Location</button>
+        <button class="button button-block button-balanced" ng-disabled="locationForm.$invalid">Enviar reporte</button>
 
       </div>
 

@@ -1,8 +1,22 @@
-pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PMBService', 'ReportService', 'locationAPI', 'MapService','_','Loader',function($scope, $state, leafletData, PMBService, ReportService, locationAPI,MapService,_,Loader) {
+pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PMBService', 'ReportService', 'locationAPI', 'MapService','_','Loader','LocationsService',function($scope, $state, leafletData, PMBService, ReportService, locationAPI,MapService,_,Loader,LocationsService) {
   $scope.reportButton = {
     text: "Reportar",
     state: "unConfirmed"
   };
+
+  //$scope.$on('$ionicView.afterEnter', function(){ //This is fired twice in a row
+  $scope.$on("$ionicView.afterEnter", function() {
+    var map = leafletData.getMap();
+    if(LocationsService.initial_lat!=""){
+      MapService.centerMapOnCoords(LocationsService.initial_lat, LocationsService.initial_lng, 14);
+    }else{
+      MapService.centerMapOnCoords(-34.901113, -56.164531, 18);
+    }
+  });
+
+
+  /**/
+
   $scope.searchMode = "calle.lugar";
   $scope.location ={calle:null,esquina:null,lugar:null};
 
@@ -13,7 +27,7 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
   var locationGeomParams ={tipo:null,pathParams:[]};
   $scope.$on("$stateChangeSuccess", function() {
     $scope.ionAutocompleteElement = angular.element(document.getElementsByClassName("ion-autocomplete"));
-    console.log(JSON.stringify($scope.ionAutocompleteElement));
+    //console.log(JSON.stringify($scope.ionAutocompleteElement));
     $scope.ionAutocompleteElement.bind('touchend click focus', $scope.onClick);
   });
 

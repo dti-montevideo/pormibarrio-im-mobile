@@ -1,8 +1,6 @@
  //pmb_im.services.factory('MapService', [ function() {
  pmb_im.services.factory('MapService', ['leafletData', function(leafletData) {
 
-   //   pmb_im.services.factory('MapService', ['$scope', 'leafletData', function($scope, leafletData) {
-
    //Definicion de la proyecccion UTM 21 s
    proj4.defs('EPSG:32721', '+proj=utm +zone=21 +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs');
 
@@ -37,6 +35,12 @@
        layer.openPopup();
      });
    };
+
+   mapService.centerMapOnCoords = function(lat,lng,zoom) {
+     leafletData.getMap().then(function(map) {
+        map.setView(new L.LatLng(lat, lng),zoom);
+       });
+     }
 
    return mapService;
 

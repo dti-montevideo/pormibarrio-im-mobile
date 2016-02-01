@@ -1,4 +1,7 @@
-pmb_im.controllers.controller('ReportCtrl', ['$scope', "$state",'$cordovaCamera', '$cordovaFile', '$ionicSlideBoxDelegate', '$ionicNavBarDelegate', 'leafletData', 'ReportService','PMBService', function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $ionicNavBarDelegate, leafletData, ReportService,PMBService) {
+pmb_im.controllers.controller('ReportCtrl', ['$scope', "$state",'$cordovaCamera', '$cordovaFile',
+'$ionicSlideBoxDelegate', '$ionicNavBarDelegate', 'leafletData', 'ReportService','PMBService',
+function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $ionicNavBarDelegate,
+  leafletData, ReportService,PMBService) {
 
 
   $scope.report = ReportService.current;

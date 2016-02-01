@@ -44,15 +44,15 @@ pmb_im.app = angular.module('pmb_im', ['ionic','ionic.wizard','ion-autocomplete'
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  .state('app', {
+.state('app', {
     url: "/app",
     abstract: true,
     templateUrl: "templates/menu.html",
     controller: 'MapController'
   })
 
-  .state('app.map', {
-    url: "/map",
+.state('app.map', {
+    url: "/map/",
     views: {
       'menuContent' :{
         templateUrl: "templates/map.html",
@@ -61,7 +61,15 @@ pmb_im.app = angular.module('pmb_im', ['ionic','ionic.wizard','ion-autocomplete'
     }
   })
 
-
+.state('app.intro', {
+  url: "/intro",
+  views: {
+    'menuContent' :{
+      templateUrl: "templates/intro.html",
+      controller : "IntroCtrl"
+    }
+  }
+})
 
 .state('app.wizard', {
   url: '/reportar',
@@ -74,6 +82,6 @@ pmb_im.app = angular.module('pmb_im', ['ionic','ionic.wizard','ion-autocomplete'
   }
 });
 // if none of the above states are matched, use this as the fallback
-$urlRouterProvider.otherwise('/app/map');
+$urlRouterProvider.otherwise('/app/intro');
 
 });
