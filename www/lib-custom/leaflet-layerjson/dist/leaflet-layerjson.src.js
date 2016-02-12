@@ -398,10 +398,11 @@
 
     _onEachFeatureDefault: function(feature, layer) {
 // does this feature have a property named popupContent?
-var html,reportId,descripcion,baseURL = "http://datauy.netuy.net/";
+var html,reportId,descripcion,baseURL = "http://devel.pormibarrio.uy/";
   if (feature.properties) {
-    reportId = feature.properties.id;descripcion = feature.properties.title;
-    html = '<a class="text report-link" href=' + baseURL + 'report/' + reportId + '><p>' + descripcion + '</p></a>';
+    reportId = feature.properties.id;
+    descripcion = feature.properties.title;
+    html = '<a class="text report-link" ng-click="viewReportDetails(' + reportId + ')"><p>' + descripcion + '</p></a>';
 
     layer.bindPopup(html);
 }

@@ -1,53 +1,45 @@
-<ion-view hide-nav-bar="true">
-  <ion-nav-buttons side="left">
-    <button class="button button-light no-animation" ion-wizard-previous>
-      Atrás
-    </button>
-  </ion-nav-buttons>
-  <ion-nav-buttons side="right">
-    <button class="button button-light no-animation" ion-wizard-next>
-      Siguiente
-    </button>
-  </ion-nav-buttons>
-  <ion-slide-box ion-wizard>
-    <ion-slide ion-wizard-step>
-      <ion-wizard-content class="has-header">
-        <div class="list card">
-          <div class="item item-image">
-            <img ng-src="{{urlForImage()}}" />
-          </div>
-          <div class="padding">
-            <button class="button button-block button-calm" ng-click="addImage()">Camara</button>
-            <button class="button button-block button-calm" ng-click="addImage(true)">Album</button>
-          </div>
-        </div>
-      </ion-wizard-content>
-    </ion-slide>
-    <ion-slide ion-wizard-step next-condition="report.title && report.details">
-      <ion-wizard-content class="has-header">
-        <div class="list">
-          <label class="item item-input">
-            <input type="text" placeholder="Ingrese título" ng-model="report.title">
-          </label>
-          <label class="item item-input">
-            <textarea placeholder="Descripción" ng-model="report.details"></textarea>
-          </label>
-        </div>
+<div class="top-bar-imm">
+  <div class="white-bar-imm"></div>
+  <div class="icon-imm-top"/></div>
+</div>
 
-      </ion-wizard-content>
-    </ion-slide>
-    <ion-slide ion-wizard-step class="has-header">
-      <div class="list cards">
-        <label class="item item-input">
-          <input type="text" placeholder="Ingrese título" ng-model="report.title">
-        </label>
-        <label class="item item-input">
-          <textarea placeholder="Descripción" ng-model="report.details"></textarea>
-        </label>
-        <div class="padding">
-          <button class="button button-block button-calm" ng-click="confirmReport()">Reportar</button>
+<ion-view hide-nav-bar="true">
+  <ion-scroll direction="y" class="new-report-scroll">
+      <div class="new-report-slide">
+        <div class="new-report-content">
+          <div class="list">
+            <select id="categoriesSelect" ng-model="report.categorygroup" ng-change="update_subcategories()">
+              <option value="" disabled selected>Seleccione una categoría</option>
+              <option value="{{ key }}" ng-repeat="(key,data) in categories">{{ data.name }}</option>
+            </select>
+            <select id="subcategoriesSelect_{{key}}" class="subcategory-hidden" ng-model="report.category" ng-repeat="(key,data) in categories">
+              <option value="" disabled selected>Seleccione una subcategoría</option>
+              <option value="{{ subcats }}" ng-repeat="subcats in data.categories">{{ subcats }}</option>
+            </select>
+            <label class="item item-input">
+              <input type="text" placeholder="Ingrese título" ng-model="report.title">
+            </label>
+            <label class="item item-input">
+              <textarea placeholder="Descripción" ng-model="report.detail"></textarea>
+            </label>
+            <div class="list card">
+              <div class="item item-image">
+                <!--
+                <img id="image_preview" ng-src="{{urlForImage()}}" />
+              -->
+                <img class="image-preview" ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
+                <img class="image-preview" ng-show="imgURI === undefined" ng-src="http://placehold.it/200x200">
+              </div>
+              <div class="padding">
+                <button class="button button-block button-calm" ng-click="addImage()">Camara</button>
+                <button class="button button-block button-calm" ng-click="addImage(true)">Album</button>
+              </div>
+            </div>
+            <div class="padding">
+              <button class="button button-block button-calm" ng-click="confirmReport()">Publicar</button>
+            </div>
+          </div>
         </div>
       </div>
-    </ion-slide>
-  </ion-slide-box>
+  </ionic-scroll>
 </ion-view>

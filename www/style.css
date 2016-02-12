@@ -302,3 +302,40 @@ body {
 .leaflet-top .leaflet-control {
   margin-top: 40px;
 }
+
+.new-report-content {
+  margin-top: 30px;
+  height: auto;
+}
+
+.new-report-slide {
+  height: 100%;
+}
+
+.subcategory-hidden{
+  display: none;
+}
+
+.subcategory-active{
+  display: block;
+}
+
+.new-report-slide-controls{
+  z-index: 11111;
+  position: absolute;
+  bottom: 20px;
+  height: 50px;
+  width: 100%;
+}
+
+.image_preview{
+  width: 100px;
+  height: 100px;
+}
+
+.new-report-scroll{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0%;
+}

@@ -1,5 +1,5 @@
 pmb_im.services.factory('ReportService', ['$http', 'leafletData', '$cordovaFileTransfer', function($http, leafletData, $cordovaFileTransfer) {
-  var base = "http://10.191.0.16:3000";
+  var baseURL = "http://devel.pormibarrio.uy/report/ajax/";
 
 
   /**
@@ -9,24 +9,27 @@ pmb_im.services.factory('ReportService', ['$http', 'leafletData', '$cordovaFileT
     angular.extend(this, _data);
   }
 
-
+Report.getById = function(id){
+  var url = baseURL + id;
+  return $http.get(url);
+}
 
 
 Report._default = function(){
   var _data = {
     lat: 0,
     lon: 0,
-    title: '',
-    details: '',
-    may_show_name: '',
-    category: '',
+    title: null,
+    detail: null,
+    may_show_name: 1,
+    category: null,
     phone: '',
     pc: '',
-    file: '',
-    name:'Nacho Apellido',
-  email:'ignacio.talavera@imm.gub.uy',
+    file: null,
+    name:'Pablo Pignolo',
+  email:'pablo.pignolo@gmail.com',
   submit_sign_in:1,
-  password_sign_in:'test',
+  password_sign_in:'itacare7',
   remember_me:1
   };
   return new Report(_data);
@@ -34,8 +37,9 @@ Report._default = function(){
   Report._all = [];
   Report.current = {};
   Report._new = function(){
-    Report.current = Report._default();
-    return Report.current;
+    /*Report.current = Report._default();
+    return Report.current;*/
+    return Report._default();
   };
 
 

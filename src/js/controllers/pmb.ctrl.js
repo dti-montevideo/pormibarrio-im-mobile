@@ -8,9 +8,9 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
   $scope.$on("$ionicView.afterEnter", function() {
     var map = leafletData.getMap();
     if(LocationsService.initial_lat!=""){
-      MapService.centerMapOnCoords(LocationsService.initial_lat, LocationsService.initial_lng, 14);
+      MapService.centerMapOnCoords(LocationsService.initial_lat, LocationsService.initial_lng, 18);
     }else{
-      MapService.centerMapOnCoords(-34.901113, -56.164531, 18);
+      MapService.centerMapOnCoords(-34.901113, -56.164531, 14);
     }
   });
 

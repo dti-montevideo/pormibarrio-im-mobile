@@ -1,11 +1,30 @@
 pmb_im.controllers.controller('ReportCtrl', ['$scope', "$state",'$cordovaCamera', '$cordovaFile',
 '$ionicSlideBoxDelegate', '$ionicNavBarDelegate', 'leafletData', 'ReportService','PMBService',
+'LocationsService','CategoriesService',
 function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $ionicNavBarDelegate,
-  leafletData, ReportService,PMBService) {
+  leafletData, ReportService,PMBService,LocationsService,CategoriesService) {
 
+    $scope.$on("$ionicView.beforeEnter", function() {
+      $scope.report = ReportService._new();
+      $scope.myActiveSlide = 1;
+      $scope.report.lat = LocationsService.new_report_lat;
+      $scope.report.lon = LocationsService.new_report_lng;
+      console.log($scope.report.lat);
+      console.log($scope.report.lon);
+      CategoriesService.all().success(function (response) {
+        $scope.categories = response;
+      })
+    });
 
-  $scope.report = ReportService.current;
-
+  $scope.update_subcategories = function(){
+    var all_subcats_selects_active = document.getElementsByClassName("subcategory-active");
+    if (all_subcats_selects_active != 'undefined' && all_subcats_selects_active.length>0){
+      all_subcats_selects_active[0].className = "subcategory-hidden";
+    }
+    var idCat = $scope.report.categorygroup;
+    var active_select = document.getElementById('subcategoriesSelect_'+idCat);
+    active_select.className = "subcategory-active";
+  };
 
   $scope.goToState = function(stateView) {
 
@@ -13,14 +32,15 @@ function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $i
   };
 
   $scope.confirmReport = function() {
- console.log(JSON.stringify($scope.report));
-
-    PMBService.report($scope.report).then(function(result) {
-      var jsonResult = JSON.stringify(result);
-      console.log(jsonResult);
-      alert(jsonResult);
-
-    });
+    console.log(JSON.stringify($scope.report));
+    var report_sent = PMBService.report($scope.report);
+    if(report_sent){
+      LocationsService.initial_lat = $scope.report.lat;
+      LocationsService.initial_lng = $scope.report.lon;
+      $state.go("app.map");
+    }else{
+      alert("Hubo un error al enviar el reporte.")
+    }
   };
 
   $scope.$on('wizard:Previous', function(e) {
@@ -38,9 +58,11 @@ function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $i
   });
 
   $scope.image = null;
+
   $scope.addImage = function(isFromAlbum) {
 
     var options = {
+      quality: 100,
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: !isFromAlbum ? Camera.PictureSourceType.CAMERA : Camera.PictureSourceType.PHOTOLIBRARY, // Camera.PictureSourceType.PHOTOLIBRARY
       allowEdit: false,
@@ -52,17 +74,15 @@ function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $i
 
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
-
-
       onImageSuccess(imageData);
 
       function onImageSuccess(fileURI) {
         window.FilePath.resolveNativePath(fileURI, function(result) {
           // onSuccess code
           fileURI = 'file://' + result;
-          createFileEntry(fileURI);
-
-
+          $scope.report.file = fileURI;
+          $scope.imgURI = fileURI;
+          //createFileEntry(fileURI);
         }, function(error) {
           console.error("Error resolveNativePath" + error);
         });
@@ -118,7 +138,7 @@ function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $i
   };
 
   $scope.urlForImage = function() {
-    var imageURL = "http://placehold.it/300x300";
+    var imageURL = "http://placehold.it/200x200";
     if ($scope.image) {
       var name = $scope.image.substr($scope.image.lastIndexOf('/') + 1);
       imageURL = cordova.file.dataDirectory + name;
