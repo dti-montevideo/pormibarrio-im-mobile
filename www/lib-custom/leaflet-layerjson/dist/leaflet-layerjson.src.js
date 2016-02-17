@@ -396,17 +396,18 @@
       }
     },
 
-    _onEachFeatureDefault: function(feature, layer) {
+  /*  _onEachFeatureDefault: function(feature, layer) {
 // does this feature have a property named popupContent?
 var html,reportId,descripcion,baseURL = "http://devel.pormibarrio.uy/";
   if (feature.properties) {
     reportId = feature.properties.id;
     descripcion = feature.properties.title;
     html = '<a class="text report-link" ng-click="viewReportDetails(' + reportId + ')"><p>' + descripcion + '</p></a>';
-
-    layer.bindPopup(html);
+    var compiled = $compile(html)($scope);
+    layer.bindPopup(compiled[0]);
+    //layer.bindPopup(html);
 }
-}
+}*/
   });
 
   L.layerJSON = function(options) {

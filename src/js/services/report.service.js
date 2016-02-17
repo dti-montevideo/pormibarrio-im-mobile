@@ -11,7 +11,9 @@ pmb_im.services.factory('ReportService', ['$http', 'leafletData', '$cordovaFileT
 
 Report.getById = function(id){
   var url = baseURL + id;
-  return $http.get(url);
+  return $http.get(url).then(function(result){
+            return result;
+  });
 }
 
 

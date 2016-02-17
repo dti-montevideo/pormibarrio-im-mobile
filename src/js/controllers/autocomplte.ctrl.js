@@ -16,7 +16,7 @@ pmb_im.controllers.controller('AutoCompleteCtrl', ['$scope', 'leafletData', 'loc
   $scope.searchLocation = function(query) {
 
     if (query) {
-      console.log("query= " + query);
+      //console.log("query= " + query);
       return locationAPI.searchLocationByStr(query);
 
     }

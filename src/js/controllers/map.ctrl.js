@@ -1,16 +1,20 @@
-pmb_im.controllers.controller('MapController', ['$scope', '_',
+pmb_im.controllers.controller('MapController', ['$scope', '$sce', '_',
   '$cordovaGeolocation',
+  '$compile',
   '$state',
   '$stateParams',
   '$ionicModal',
-  '$ionicPopup','leafletData', 'PMBService','LocationsService',
+  '$ionicPopup','leafletData', 'PMBService','LocationsService','ReportService','FaqService',
   function(
-    $scope, _,
+    $scope,
+    $sce,
+    _,
     $cordovaGeolocation,
+    $compile,
     $state,
     $stateParams,
     $ionicModal,
-    $ionicPopup,leafletData, PMBService, LocationsService
+    $ionicPopup,leafletData, PMBService, LocationsService, ReportService,FaqService
   ) {
 
     /**
@@ -22,10 +26,8 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
 
 
 
-
-
-    $scope.$on("$stateChangeSuccess", function() {
-
+    $scope.$on("$ionicView.afterEnter", function() {
+      document.getElementById("spinner").style.display = "none";
 
         $scope.addReportsLayer();
         $scope.addMapControls();
@@ -69,10 +71,21 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
       $scope.modal = modal;
     });*/
 
-    $scope.report = function() {
+    $scope.report = function(alreadyLocated) {
       $scope.set_active_option('button-report');
       document.getElementById("report-list-scroll").style.display = "none";
-      $state.go("app.wizard");
+      if(alreadyLocated==1){
+        $state.go("app.wizard");
+      }else{
+        var alertPopup = $ionicPopup.alert({
+         title: 'Nuevo reporte',
+         template: 'Para realizar un nuevo reporte, presione sobre la ubicación deseada.'
+        });
+
+        alertPopup.then(function(res) {
+
+        });
+      }
     }
 
     $scope.list_reports = function() {
@@ -80,9 +93,24 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
       document.getElementById("report-list-scroll").style.display = "block";
     }
 
+    $ionicModal.fromTemplateUrl('templates/faq.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.faq_modal = modal;
+      });
+
     $scope.help = function() {
       $scope.set_active_option('button-help');
       document.getElementById("report-list-scroll").style.display = "none";
+      FaqService.all().success(function (response) {
+        $scope.faq = response;
+        $scope.faq_modal.show()
+      })
+    }
+
+    $scope.close_faq_modal = function(){
+      $scope.faq_modal.hide();
     }
 
     $scope.set_active_option = function(buttonid) {
@@ -93,9 +121,33 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
       document.getElementById(buttonid).className = "option-active";
     }
 
+    $ionicModal.fromTemplateUrl('templates/report-detail.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.report_detail_modal = modal;
+      });
+
     $scope.viewReportDetails = function(id){
-      alert(id);
+      document.getElementById("spinner").style.display = "block";
+      document.getElementById("report-list-scroll").style.display = "none";
+      ReportService.getById(id).then(function(resp) {
+        $scope.report_detail = $sce.trustAsHtml(resp.data.replace("overflow:auto;",""));
+        document.getElementById("spinner").style.display = "none";
+        $scope.report_detail_modal.show()
+      }, function(err) {
+        //console.log(err);
+        document.getElementById("spinner").style.display = "none";
+        $scope.report_detail = "ERROR AL CARGAR DATOS DEL REPORTE";
+        $scope.report_detail_modal.show()
+      });
     }
+
+    $scope.close_report_detail_modal = function(){
+      $scope.report_detail_modal.hide();
+    }
+
+
     /**
      * Center map on user's current position
      */
@@ -118,8 +170,8 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
 
         }, function(err) {
           // error
-          console.log("Location error!");
-          console.log(err);
+          //console.log("Location error!");
+          //console.log(err);
         });
 
     };
@@ -129,11 +181,11 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
 
       leafletData.getMap().then(function(map) {
         var bbox = map.getBounds();
-        Console.log(bbox);
+        //Console.log(bbox);
 
         PMBService.around(bbox).then(function(data) {
           for (var i = 0; i < data.length; i++) {
-            console.log("pin " + i + "=" + data[i]);
+            //console.log("pin " + i + "=" + data[i]);
           }
         });
       });
@@ -212,13 +264,15 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
             reportId = feature.properties.id;
             descripcion = feature.properties.title;
             html = '<a class="text report-link" ng-click="viewReportDetails(' + reportId + ')"><p>' + descripcion + '</p></a>';
-            layer.bindPopup(html);
+            var compiled = $compile(html)($scope);
+            layer.bindPopup(compiled[0]);
           }
         },
 
         l = new L.LayerJSON({
           url: baseURL + "ajax_geo?bbox={bbox}" /*"ajax_geo?bbox={bbox}"*/ ,
-          locAsGeoJSON: true /*locAsArray:true*/
+          locAsGeoJSON: true /*locAsArray:true*/,
+          onEachFeature: onEachFeature
         });
 
       leafletData.getMap().then(function(map) {
@@ -326,7 +380,7 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
                 $scope.map.markers.now = {
                   lat:position.coords.latitude,
                   lng:position.coords.longitude,
-                  message: "<p align='center'>Te encuentras aquí</p><a ng-click='report();'>Iniciar reporte en tu posición actual</a>",
+                  message: "<p align='center'>Te encuentras aquí <br/> <a ng-click='report(1);'>Iniciar reporte en tu posición actual</a></p>",
                   focus: true,
                   draggable: false,
                   getMessageScope: function() { return $scope; }
@@ -334,8 +388,8 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
                 $scope.map.markers.now.openPopup();
               }, function(err) {
                 // error
-                console.log("Location error!");
-                console.log(err);
+                //console.log("Location error!");
+                //console.log(err);
               });
 
           };
@@ -347,21 +401,12 @@ pmb_im.controllers.controller('MapController', ['$scope', '_',
         this.name = "";
       };
 
-      /*$ionicModal.fromTemplateUrl('templates/addLocation.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-          $scope.modal = modal;
-        });*/
+
 
       /**
        * Detect user long-pressing on map to add new location
        */
       $scope.$on('leafletDirectiveMap.contextmenu', function(event, locationEvent){
-        /*$scope.newLocation = new Location();
-        $scope.newLocation.lat = locationEvent.leafletEvent.latlng.lat;
-        $scope.newLocation.lng = locationEvent.leafletEvent.latlng.lng;
-        $scope.modal.show();*/
         LocationsService.new_report_lat = locationEvent.leafletEvent.latlng.lat;
         LocationsService.new_report_lng = locationEvent.leafletEvent.latlng.lng;
         $state.go("app.wizard");

@@ -6,6 +6,7 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
 
   //$scope.$on('$ionicView.afterEnter', function(){ //This is fired twice in a row
   $scope.$on("$ionicView.afterEnter", function() {
+    document.getElementById("spinner").style.display = "none";
     var map = leafletData.getMap();
     if(LocationsService.initial_lat!=""){
       MapService.centerMapOnCoords(LocationsService.initial_lat, LocationsService.initial_lng, 18);
@@ -62,7 +63,7 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
 
       });
     } else {
-      console.log("currentReport =" + JSON.stringify($scope.currentReport));
+      //console.log("currentReport =" + JSON.stringify($scope.currentReport));
 
       $state.go("app.wizard");
     }
@@ -78,7 +79,7 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
         promiseSearch = locationAPI.searchLocationByStr(query);
 
       } else {
-        console.log("buscando calle/"+$scope.selectedItem.codigo+"esquina = " + query);
+        //console.log("buscando calle/"+$scope.selectedItem.codigo+"esquina = " + query);
 
         promiseSearch = locationAPI.searchEsquinaByStr({
           calle: $scope.selectedItem.codigo,
@@ -144,10 +145,10 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
   };
 
   $scope.itemsCanceled= function(_item){
-    console.log(JSON.stringify(_item));
+    //console.log(JSON.stringify(_item));
     var numPuerta = parseInt(_item.searchQuery);
     if(Number.isInteger(numPuerta)){
-      console.log("IS number");
+      //console.log("IS number");
       locationGeomParams.tipo="DIRECCION";//$scope.selectedItem.descTipo;
       locationGeomParams.pathParams.push($scope.location.calle.codigo);
       locationGeomParams.pathParams.push(numPuerta);
@@ -156,7 +157,7 @@ pmb_im.controllers.controller('PMBCtrl', ['$scope', '$state', 'leafletData', 'PM
       $scope.searchMode = "calle.lugar";
 
     },function(error){
-      console.log("Error obteniendo la direccion "+ JSON.stringify(error));
+      //console.log("Error obteniendo la direccion "+ JSON.stringify(error));
       Loader.showAlert("Error","No existe esa direccion").then(function(res){
           $scope.ionAutocompleteElement.controller('ionAutocomplete').showModal();
         });

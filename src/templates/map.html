@@ -4,6 +4,8 @@
 
 </ion-nav-title>
 
+<div id="spinner" class="intro-spinner"><ion-spinner icon="spiral"></ion-spinner></div>
+
 <div class="top-bar-imm">
   <div class="white-bar-imm"></div>
   <div class="icon-imm-top"/></div>
@@ -24,7 +26,7 @@
       click en el mapa en el lugar donde se encuentra el problema.</p>
     </div>
     <div id="report-list">
-      <div id="report-container-{{report.properties.id}}" ng-click="goToReport(report)" ng-repeat="report in reports" class="report-inside-list">
+      <div id="report-container-{{report.properties.id}}" ng-click="goToReport(report)" ng-repeat="report in reports track by $index" class="report-inside-list">
         <div style="background-image: url('{{baseURL}}{{report.properties.category_url}}');" class="report-in-list-icon">
         </div>
         <div class="report-in-list-info">
@@ -61,7 +63,7 @@
   </div>
   <div class="options-bar">
     <div id="button-report" class="option-active">
-      <div class="button-report" ng-click="report()"></div>
+      <div class="button-report" ng-click="report(0)"></div>
     </div>
     <div id="button-list-reports" class="option-inactive">
       <div class="button-list-reports" ng-click="list_reports()"></div>

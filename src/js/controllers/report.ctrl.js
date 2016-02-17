@@ -4,13 +4,16 @@ pmb_im.controllers.controller('ReportCtrl', ['$scope', "$state",'$cordovaCamera'
 function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $ionicNavBarDelegate,
   leafletData, ReportService,PMBService,LocationsService,CategoriesService) {
 
+    $scope.$on("$ionicView.enter", function() {
+    });
+
     $scope.$on("$ionicView.beforeEnter", function() {
       $scope.report = ReportService._new();
       $scope.myActiveSlide = 1;
       $scope.report.lat = LocationsService.new_report_lat;
       $scope.report.lon = LocationsService.new_report_lng;
-      console.log($scope.report.lat);
-      console.log($scope.report.lon);
+      //console.log($scope.report.lat);
+      //console.log($scope.report.lon);
       CategoriesService.all().success(function (response) {
         $scope.categories = response;
       })
@@ -32,16 +35,51 @@ function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $i
   };
 
   $scope.confirmReport = function() {
-    console.log(JSON.stringify($scope.report));
     var report_sent = PMBService.report($scope.report);
-    if(report_sent){
+    var back_to_map = false;
+
+    if($scope.report.file==null){
+      report_sent.success(function(data, status, headers,config){
+        //var jsonResult = JSON.stringify(result);
+        //console.log(jsonResult);
+        //console.log('data success');
+        //console.log(data); // object seems fine
+        $scope.back_to_map(true);
+      })
+      .error(function(data, status, headers,config){
+        //console.log('data error');
+        //console.log(data);
+        $scope.back_to_map(true);
+      })
+    }else{
+      report_sent.then(function(result) {
+        // Success!
+        //console.log("Envío exitoso",result);
+        $scope.back_to_map(true);
+      }, function(err) {
+        //console.log("Error al subir el archivo",err);
+        $scope.back_to_map(true);
+      }, function(progress) {
+        $timeout(function() {
+          $scope.downloadProgress = (progress.loaded / progress.total) * 100;
+        });
+      });
+    }
+  };
+
+  $scope.back_to_map = function(back_to_map){
+    if(back_to_map){
       LocationsService.initial_lat = $scope.report.lat;
       LocationsService.initial_lng = $scope.report.lon;
       $state.go("app.map");
     }else{
       alert("Hubo un error al enviar el reporte.")
     }
-  };
+  }
+
+  $scope.cancelReport = function(){
+    $state.go("app.map");
+  }
 
   $scope.$on('wizard:Previous', function(e) {
 
@@ -118,8 +156,8 @@ function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $i
 
       function fail(error) {
 
-        console.log("fail: " + error.code);
-        console.log("fail: " + angular.toJson(error));
+        //console.log("fail: " + error.code);
+        //console.log("fail: " + angular.toJson(error));
       }
 
       function makeid() {
@@ -133,7 +171,7 @@ function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $i
       }
 
     }, function(err) {
-      console.log(err);
+      //console.log(err);
     });
   };
 
@@ -143,7 +181,7 @@ function($scope,$state, $cordovaCamera, $cordovaFile, $ionicSlideBoxDelegate, $i
       var name = $scope.image.substr($scope.image.lastIndexOf('/') + 1);
       imageURL = cordova.file.dataDirectory + name;
     }
-    console.log("ImageURL = " + imageURL);
+    //console.log("ImageURL = " + imageURL);
     return imageURL;
   };
 

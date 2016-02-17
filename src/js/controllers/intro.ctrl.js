@@ -6,7 +6,6 @@ pmb_im.controllers.controller('IntroCtrl', ['$scope', '$state',
   'LocationsService',
   function($scope, $state, $cordovaGeolocation, $stateParams, $ionicPlatform, $ionicPopup, LocationsService) {
 
-
   $scope.geolocate = function() {
 
       var posOptions = {timeout: 7000, enableHighAccuracy: true};

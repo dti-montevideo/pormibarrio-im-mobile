@@ -36,8 +36,9 @@ pmb_im.app = angular.module('pmb_im', ['ionic','ionic.wizard','ion-autocomplete'
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
-
+.config(function($stateProvider, $urlRouterProvider, $compileProvider, $ionicConfigProvider) {
+  $compileProvider.debugInfoEnabled(false);
+  $ionicConfigProvider.scrolling.jsScrolling(false);
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
@@ -45,6 +46,7 @@ pmb_im.app = angular.module('pmb_im', ['ionic','ionic.wizard','ion-autocomplete'
   $stateProvider
 
 .state('app', {
+    cache: false,
     url: "/app",
     abstract: true,
     templateUrl: "templates/menu.html",
@@ -52,6 +54,7 @@ pmb_im.app = angular.module('pmb_im', ['ionic','ionic.wizard','ion-autocomplete'
   })
 
 .state('app.map', {
+    cache: false,
     url: "/map/",
     views: {
       'menuContent' :{
@@ -62,6 +65,7 @@ pmb_im.app = angular.module('pmb_im', ['ionic','ionic.wizard','ion-autocomplete'
   })
 
 .state('app.intro', {
+  cache: false,
   url: "/intro",
   views: {
     'menuContent' :{
@@ -72,6 +76,7 @@ pmb_im.app = angular.module('pmb_im', ['ionic','ionic.wizard','ion-autocomplete'
 })
 
 .state('app.wizard', {
+  cache: false,
   url: '/reportar',
   views: {
     'menuContent': {
