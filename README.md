@@ -2,7 +2,7 @@
 
 #Este proyecto se encuentra cerrado
 La Intendencia de Montevideo no continuará con el desarrollo o mantenimiento de este proyecto. 
-Se mantiene el repositorio público a modo de consulta o referencia.
+Este repositorio permanecerá accesible a modo de consulta hasta el 31 de diciembre de 2016.
 
 
 
